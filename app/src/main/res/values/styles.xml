@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.AppRiskAuditor" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#0B8F77</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">#F5F8F7</item>
+        <item name="android:navigationBarColor">#F5F8F7</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>
