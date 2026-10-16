@@ -24,7 +24,7 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          # The legacy "tools" SDK package no longer exists and causes sdkmanager to fail.
+          # The legacy "tools" SDK package no longer exists.
           packages: platform-tools
 
       - name: Set up Gradle
@@ -33,17 +33,19 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
+      # Quality checks must pass before an APK is presented as verified.
+      - name: Run unit tests
+        run: ./gradlew --no-daemon test
+
       - name: Assemble debug and release APKs
         run: ./gradlew --no-daemon assembleDebug assembleRelease
 
-      - name: Run unit tests
-        # Runs after the APK build so a failing test never blocks the downloadable APK.
-        continue-on-error: true
-        run: ./gradlew --no-daemon test
-
       - name: Collect APKs into release/
         run: |
+          set -euo pipefail
           mkdir -p release
+          test -s app/build/outputs/apk/debug/app-debug.apk
+          test -s app/build/outputs/apk/release/app-release.apk
           cp app/build/outputs/apk/debug/app-debug.apk release/AppRiskAuditor.apk
           cp app/build/outputs/apk/release/app-release.apk release/AppRiskAuditor-release.apk
 
